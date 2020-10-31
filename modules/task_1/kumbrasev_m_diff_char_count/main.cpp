@@ -1,11 +1,11 @@
 // Copyright 2020 Kumbrasev Mark
 #include <mpi.h>
+#include <gtest-mpi-listener.hpp>
+#include <gtest/gtest.h>
 #include <cstdlib>
 #include <string>
 #include <iostream>
 #include <cmath>
-#include <gtest-mpi-listener.hpp>
-#include <gtest/gtest.h>
 #include "./diff_char_counter.h"
 
 TEST(Parallel_Operations_MPI, empty_strings) {

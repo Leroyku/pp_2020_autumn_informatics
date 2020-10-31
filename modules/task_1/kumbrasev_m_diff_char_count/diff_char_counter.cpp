@@ -25,7 +25,7 @@ std::size_t difference_count(par_policy, const std::string& str_lhs, const std::
     str_lhs.size() > str_rhs.size() ? str_lhs.resize(str_rhs.size()) : str_rhs.resize(str_lhs.size());
     int b = str_lhs.size();
     str = new char();
-	
+    
     MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
@@ -54,9 +54,7 @@ std::size_t difference_count(par_policy, const std::string& str_lhs, const std::
     MPI_Reduce(&locdiff, &sumdiff, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     if (rank == 0)
         end = MPI_Wtime();
-
     
     std::cout << sumdiff << " " << locdiff << std::endl;
     return sumdiff + diff; 
-
 }
