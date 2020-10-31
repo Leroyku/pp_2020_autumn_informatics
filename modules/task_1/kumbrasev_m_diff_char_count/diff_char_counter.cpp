@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include <cmath>
-#include "./diff_char_counter.h"
+#include "../../../modules/task_1/kumbrasev_m_diff_char_count/diff_char_counter.h"
 
 std::size_t difference_count(seq_policy, const std::string& str_lhs, const std::string& str_rhs) {
     std::size_t counter{};
@@ -12,7 +12,7 @@ std::size_t difference_count(seq_policy, const std::string& str_lhs, const std::
         counter += str_lhs[i] != str_rhs[i];
     }
 
-    return counter;
+         counter;
 }
 
 std::size_t difference_count(par_policy, const std::string& str_lhs, const std::string& str_rhs) {
@@ -21,7 +21,7 @@ std::size_t difference_count(par_policy, const std::string& str_lhs, const std::
     char *str;
     MPI_Status status;
 
-    diff = abs((int)str_lhs.size() - (int)str_rhs.size());
+    diff = abs(reinterpret_cast<int>(str_lhs.size()) - reinterpret_cast<int>(str_rhs.size()));
     str_lhs.size() > str_rhs.size() ? str_lhs.resize(str_rhs.size()) : str_rhs.resize(str_lhs.size());
     int b = str_lhs.size();
     str = new char();
@@ -46,7 +46,7 @@ std::size_t difference_count(par_policy, const std::string& str_lhs, const std::
 
 
     MPI_Bcast(&locSize, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    char *locstr = (char *)malloc(locSize * 2 * sizeof(char));
+    char *locstr = (static_cast<char *>)malloc(locSize * 2 * sizeof(char));
     MPI_Scatter(str, locSize * 2, MPI_CHAR, locstr, locSize * 2, MPI_CHAR, 0, MPI_COMM_WORLD);
     locstr[locSize * 2] = '\0';
     for (int i = 0; i < locSize; i++)
@@ -54,7 +54,5 @@ std::size_t difference_count(par_policy, const std::string& str_lhs, const std::
     MPI_Reduce(&locdiff, &sumdiff, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     if (rank == 0)
         end = MPI_Wtime();
-    
-    std::cout << sumdiff << " " << locdiff << std::endl;
-    return sumdiff + diff; 
+    return sumdiff + diff;
 }
