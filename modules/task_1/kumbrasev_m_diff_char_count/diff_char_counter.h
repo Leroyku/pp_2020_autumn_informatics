@@ -14,7 +14,7 @@ using par_policy = execute_policy<1>;
 std::string get_random_string() {
     std::string str{};
     for (std::size_t k = 0; k < 1000; k++) {
-        str += reinterpret_cast<char>('a'+ rand() % 20);
+        str += reinterpret_cast<char>('a'+ rand_r() % 20);
     }
     return str;
 }
