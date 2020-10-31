@@ -1,8 +1,9 @@
-#include "mpi.h"
+// Copyright 2020 Kumbrasev Mark
 #include <cstdlib>
 #include <string>
 #include <iostream>
 #include <cmath>
+#include <mpi.h>
 #include "./diff_char_counter.h"
 
 std::size_t difference_count(seq_policy, std::string& str_lhs, std::string& str_rhs) {
