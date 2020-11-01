@@ -12,14 +12,13 @@ std::size_t difference_count(seq_policy, const std::string& str_lhs, const std::
         counter += str_lhs[i] != str_rhs[i];
     }
 
-    counter;
+    return counter;
 }
 
 std::size_t difference_count(par_policy, std::string str_lhs, std::string str_rhs) {
     int diff = 0, locdiff = 0, sumdiff = 0, locSize = 0, newSize, ProcNum, rank;
     double start, end;
     char *str;
-    MPI_Status status;
 
     diff = abs(static_cast<int>(str_lhs.size()) - static_cast<int>(str_rhs.size()));
     str_lhs.size() > str_rhs.size() ? str_lhs.resize(str_rhs.size()) : str_rhs.resize(str_lhs.size());
@@ -39,8 +38,11 @@ std::size_t difference_count(par_policy, std::string str_lhs, std::string str_rh
         for (int i = 0; i < newSize; i += locSize)
             buf += str_lhs.substr(i, locSize) + str_rhs.substr(i, locSize);
 
-
+#if WIN64 || WIN32
         strcpy_s(str, newSize * 2 + 1, buf.c_str());
+#else
+        strcpy(str, buf.c_str());
+#endif
     }
 
 
