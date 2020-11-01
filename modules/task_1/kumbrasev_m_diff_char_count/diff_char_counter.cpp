@@ -26,7 +26,6 @@ std::size_t difference_count(seq_policy, const std::string& str_lhs, const std::
 
 std::size_t difference_count(par_policy, std::string str_lhs, std::string str_rhs) {
     int diff = 0, locdiff = 0, sumdiff = 0, locSize = 0, newSize, ProcNum, rank;
-    double start, end;
     char *str;
 
     diff = abs(static_cast<int>(str_lhs.size()) - static_cast<int>(str_rhs.size()));
@@ -36,7 +35,6 @@ std::size_t difference_count(par_policy, std::string str_lhs, std::string str_rh
     MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
-        start = MPI_Wtime();
         locSize = (b + ProcNum - 1) / ProcNum;
         newSize = (locSize * ProcNum);
         str_lhs += std::string((newSize - b), '0');
@@ -47,13 +45,10 @@ std::size_t difference_count(par_policy, std::string str_lhs, std::string str_rh
         for (int i = 0; i < newSize; i += locSize)
             buf += str_lhs.substr(i, locSize) + str_rhs.substr(i, locSize);
 
-#if WIN64 || WIN32
-        strcpy_s(str, newSize * 2 + 1, buf.c_str());
-#else
-        snprintf(str, newSize * 2 + 1, "%s", buf.c_str());
-#endif
+        for (std::size_t i = 0; i < newSize * 2 + 1; ++i) {
+            str[i] = buf[i];
+        }
     }
-
 
     MPI_Bcast(&locSize, 1, MPI_INT, 0, MPI_COMM_WORLD);
     char *locstr = reinterpret_cast<char *>(malloc(locSize * 2 * sizeof(char)));
@@ -62,7 +57,6 @@ std::size_t difference_count(par_policy, std::string str_lhs, std::string str_rh
     for (int i = 0; i < locSize; i++)
         locdiff += str[i] != str[i + locSize];
     MPI_Reduce(&locdiff, &sumdiff, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
-    if (rank == 0)
-        end = MPI_Wtime();
+
     return sumdiff + diff;
 }
