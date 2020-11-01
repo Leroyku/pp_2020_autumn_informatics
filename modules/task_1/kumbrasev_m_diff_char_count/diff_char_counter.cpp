@@ -15,13 +15,13 @@ std::size_t difference_count(seq_policy, const std::string& str_lhs, const std::
          counter;
 }
 
-std::size_t difference_count(par_policy, const std::string& str_lhs, const std::string& str_rhs) {
+std::size_t difference_count(par_policy, std::string& str_lhs, std::string& str_rhs) {
     int diff = 0, locdiff = 0, sumdiff = 0, locSize = 0, newSize, ProcNum, rank;
     double start, end;
     char *str;
     MPI_Status status;
 
-    diff = abs(reinterpret_cast<int>(str_lhs.size()) - reinterpret_cast<int>(str_rhs.size()));
+    diff = abs(static_cast<int>(str_lhs.size()) - static_cast<int>(str_rhs.size()));
     str_lhs.size() > str_rhs.size() ? str_lhs.resize(str_rhs.size()) : str_rhs.resize(str_lhs.size());
     int b = str_lhs.size();
     str = new char();
