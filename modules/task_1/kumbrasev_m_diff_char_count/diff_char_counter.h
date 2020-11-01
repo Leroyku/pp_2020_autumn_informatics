@@ -14,6 +14,7 @@ struct execute_policy {};
 using seq_policy = execute_policy<0>;
 using par_policy = execute_policy<1>;
 
+std::string get_random_string();
 std::size_t difference_count(seq_policy, const std::string& str_lhs, const std::string& str_rhs);
 std::size_t difference_count(par_policy, const std::string str_lhs, const std::string str_rhs);
 

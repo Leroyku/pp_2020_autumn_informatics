@@ -50,7 +50,7 @@ std::size_t difference_count(par_policy, std::string str_lhs, std::string str_rh
 #if WIN64 || WIN32
         strcpy_s(str, newSize * 2 + 1, buf.c_str());
 #else
-        snprintf(str, newSize * 2 + 1, buf.c_str());;
+        snprintf(str, newSize * 2 + 1, "%s", buf.c_str());
 #endif
     }
 
