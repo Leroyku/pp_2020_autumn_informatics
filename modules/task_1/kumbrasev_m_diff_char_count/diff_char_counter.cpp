@@ -12,10 +12,10 @@ std::size_t difference_count(seq_policy, const std::string& str_lhs, const std::
         counter += str_lhs[i] != str_rhs[i];
     }
 
-         counter;
+    counter;
 }
 
-std::size_t difference_count(par_policy, std::string& str_lhs, std::string& str_rhs) {
+std::size_t difference_count(par_policy, std::string str_lhs, std::string str_rhs) {
     int diff = 0, locdiff = 0, sumdiff = 0, locSize = 0, newSize, ProcNum, rank;
     double start, end;
     char *str;
@@ -45,7 +45,7 @@ std::size_t difference_count(par_policy, std::string& str_lhs, std::string& str_
 
 
     MPI_Bcast(&locSize, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    char *locstr = (static_cast<char *>)malloc(locSize * 2 * sizeof(char));
+    char *locstr = reinterpret_cast<char *>(malloc(locSize * 2 * sizeof(char)));
     MPI_Scatter(str, locSize * 2, MPI_CHAR, locstr, locSize * 2, MPI_CHAR, 0, MPI_COMM_WORLD);
     locstr[locSize * 2] = '\0';
     for (int i = 0; i < locSize; i++)
