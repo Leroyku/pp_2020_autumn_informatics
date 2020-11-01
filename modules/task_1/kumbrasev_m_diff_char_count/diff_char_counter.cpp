@@ -6,6 +6,15 @@
 #include <cmath>
 #include "../../../modules/task_1/kumbrasev_m_diff_char_count/diff_char_counter.h"
 
+std::string get_random_string() {
+    std::mt19937 random;
+    std::string str{};
+    for (std::size_t k = 0; k < 1000; k++) {
+        str += static_cast<char>('a' + random() % 20);
+    }
+    return str;
+}
+
 std::size_t difference_count(seq_policy, const std::string& str_lhs, const std::string& str_rhs) {
     std::size_t counter{};
     for (std::size_t i = 0; i < str_lhs.size(); i++) {
@@ -41,7 +50,7 @@ std::size_t difference_count(par_policy, std::string str_lhs, std::string str_rh
 #if WIN64 || WIN32
         strcpy_s(str, newSize * 2 + 1, buf.c_str());
 #else
-        strcpy(str, buf.c_str());
+        snprintf(str, newSize * 2 + 1, buf.c_str());;
 #endif
     }
 

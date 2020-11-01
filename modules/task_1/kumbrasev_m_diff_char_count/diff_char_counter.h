@@ -14,15 +14,6 @@ struct execute_policy {};
 using seq_policy = execute_policy<0>;
 using par_policy = execute_policy<1>;
 
-std::string get_random_string() {
-    std::mt19937 random;
-    std::string str{};
-    for (std::size_t k = 0; k < 1000; k++) {
-        str += static_cast<char>('a' + random() % 20);
-    }
-    return str;
-}
-
 std::size_t difference_count(seq_policy, const std::string& str_lhs, const std::string& str_rhs);
 std::size_t difference_count(par_policy, const std::string str_lhs, const std::string str_rhs);
 
